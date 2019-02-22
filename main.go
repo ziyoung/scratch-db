@@ -8,6 +8,21 @@ import (
 	"strings"
 )
 
+func doMetaCommand(input string) error {
+	switch input {
+	case ".exit":
+		os.Exit(0)
+		// return nil
+	default:
+		return fmt.Errorf("Unrecognized command '%s'", input)
+	}
+	return nil
+}
+
+// todo
+func prepareStatement(input string) {
+}
+
 func main() {
 	fmt.Println("Server is running.")
 	rd := bufio.NewReader(os.Stdin)
@@ -22,11 +37,13 @@ func main() {
 			os.Exit(1)
 		}
 		text = strings.Replace(text, "\n", "", -1)
-		switch text {
-		case ".exit":
-			os.Exit(0)
-		default:
-			fmt.Printf("Unrecognized command '%s'.\n", text)
+		if strings.HasPrefix(text, ".") {
+			// excute meta command
+			if err := doMetaCommand(text); err != nil {
+				fmt.Fprint(os.Stderr, err)
+			}
+			break
 		}
+		// prepareStatement
 	}
 }
