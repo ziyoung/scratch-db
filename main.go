@@ -2,21 +2,20 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"os"
 	"strings"
 )
 
-func doMetaCommand(input string) error {
+func doMetaCommand(input string) {
 	switch input {
 	case ".exit":
 		os.Exit(0)
-		// return nil
 	default:
-		return fmt.Errorf("Unrecognized command '%s'", input)
+		fmt.Printf("Unrecognized command '%s'\n", input)
 	}
-	return nil
 }
 
 // Statement is Query data
@@ -32,12 +31,23 @@ func (s Statement) Execute() {
 	case "insert":
 		fmt.Println("This is where we would do a select.")
 	default:
-		fmt.Fprintf(os.Stderr, "Unsupported Statement type %s\n", s.typ)
+		fmt.Printf("Unsupported Statement type %s\n", s.typ)
 	}
 }
 
-// todo
-func prepareStatement(input string) (Statement, error) {
+func prepareStatement(input string) (*Statement, error) {
+	statement := &Statement{}
+	typ := ""
+	if strings.HasPrefix(input, "select") {
+		typ = "select"
+	} else if strings.HasPrefix(input, "insert") {
+		typ = "insert"
+	}
+	if typ != "" {
+		statement.typ = typ
+		return statement, nil
+	}
+	return nil, errors.New("Unrecognized command")
 }
 
 func main() {
@@ -55,12 +65,15 @@ func main() {
 		}
 		text = strings.Replace(text, "\n", "", -1)
 		if strings.HasPrefix(text, ".") {
-			// excute meta command
-			if err := doMetaCommand(text); err != nil {
-				fmt.Fprint(os.Stderr, err)
-			}
-			break
+			doMetaCommand(text)
+			continue
 		}
-		// prepareStatement
+		statement, err := prepareStatement(text)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+			continue
+		}
+		statement.Execute()
+		fmt.Println("Executed.")
 	}
 }
