@@ -7,7 +7,7 @@ Writing a simple database from scratch in Go.
 [db_tutorial](https://cstack.github.io/db_tutorial/): Let's Build a Simple Database
 
 - [x] 0. Introduction and Setting up the REPL
-- [ ] 1. World’s Simplest SQL Compiler and Virtual Machine
+- [x] 1. World’s Simplest SQL Compiler and Virtual Machine
 - [ ] 2. An In-Memory, Append-Only, Single-Table Database
 - [ ] 3. Our First Tests (and Bugs)
 - [ ] 4. Persistence to Disk
