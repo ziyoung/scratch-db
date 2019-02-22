@@ -19,8 +19,25 @@ func doMetaCommand(input string) error {
 	return nil
 }
 
+// Statement is Query data
+type Statement struct {
+	typ string
+}
+
+// Execute query
+func (s Statement) Execute() {
+	switch s.typ {
+	case "select":
+		fmt.Println("This is where we would do an insert.")
+	case "insert":
+		fmt.Println("This is where we would do a select.")
+	default:
+		fmt.Fprintf(os.Stderr, "Unsupported Statement type %s\n", s.typ)
+	}
+}
+
 // todo
-func prepareStatement(input string) {
+func prepareStatement(input string) (Statement, error) {
 }
 
 func main() {
