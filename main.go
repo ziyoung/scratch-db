@@ -27,9 +27,9 @@ type Statement struct {
 func (s Statement) Execute() {
 	switch s.typ {
 	case "select":
-		fmt.Println("This is where we would do an insert.")
+		fmt.Println("This is where we would do an select.")
 	case "insert":
-		fmt.Println("This is where we would do a select.")
+		fmt.Println("This is where we would do a insert.")
 	default:
 		fmt.Printf("Unsupported Statement type %s\n", s.typ)
 	}
@@ -54,7 +54,7 @@ func main() {
 	fmt.Println("Server is running.")
 	rd := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Print("> ")
+		fmt.Print("db > ")
 		text, err := rd.ReadString('\n')
 		if err == io.EOF {
 			break
